@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>proposal-writer-demo 手机 Dashboard</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17211c;
+        --muted: #65736b;
+        --line: #dce5df;
+        --paper: #fbfdfb;
+        --wash: #edf7f1;
+        --green: #1f6b50;
+        --blue: #225fb8;
+        --amber: #b66a13;
+        --shadow: 0 16px 42px rgba(23, 33, 28, 0.11);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        color: var(--ink);
+        background: linear-gradient(180deg, #f4faf6 0%, #ffffff 42%, #f7faf8 100%);
+        line-height: 1.55;
+      }
+      .shell { max-width: 760px; margin: 0 auto; padding: 18px 14px 48px; }
+      .hero {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: var(--shadow);
+        padding: 22px 18px;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        backdrop-filter: blur(16px);
+      }
+      .eyebrow { margin: 0 0 8px; font-size: 12px; color: var(--green); font-weight: 800; letter-spacing: 0; }
+      h1 { margin: 0; font-size: clamp(28px, 8vw, 44px); line-height: 1.05; letter-spacing: 0; }
+      .hero p { margin: 12px 0 0; color: var(--muted); font-size: 15px; }
+      .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+      .pill { border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; font-size: 12px; color: var(--ink); background: #fff; }
+      nav { display: flex; gap: 8px; overflow-x: auto; padding: 14px 2px 4px; position: sticky; top: 140px; z-index: 1; background: linear-gradient(180deg, rgba(246,250,248,.96), rgba(246,250,248,.82)); }
+      nav a { white-space: nowrap; text-decoration: none; color: var(--green); font-size: 13px; font-weight: 800; padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+      section { margin-top: 22px; }
+      h2 { margin: 0 0 12px; font-size: 21px; letter-spacing: 0; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .stat-card, .panel, .layer-card, .file-card, .tour-card {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--paper);
+        box-shadow: 0 8px 24px rgba(23,33,28,.06);
+      }
+      .stat-card { padding: 14px; min-height: 104px; }
+      .stat-card span, .stat-card small { display: block; color: var(--muted); font-size: 12px; }
+      .stat-card strong { display: block; margin: 7px 0; font-size: 28px; color: var(--green); line-height: 1; }
+      .panel { padding: 14px; }
+      .bar-row { display: grid; grid-template-columns: 92px 1fr 36px; gap: 8px; align-items: center; margin: 10px 0; font-size: 13px; }
+      .bar-track { height: 10px; border-radius: 999px; background: #e8eee9; overflow: hidden; }
+      .bar-track i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--blue)); }
+      .layer-card, .file-card, .tour-card { padding: 14px; margin-bottom: 10px; }
+      .layer-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+      .layer-head strong { font-size: 16px; }
+      .layer-head span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+      .layer-card p, .file-card p, .tour-card p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+      .layer-track { margin-top: 12px; }
+      .file-card code { display: inline-block; max-width: 100%; overflow-wrap: anywhere; color: var(--blue); font-size: 12px; }
+      .file-card h3, .tour-card h3 { margin: 8px 0 0; font-size: 16px; }
+      .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+      .tags span { font-size: 11px; border-radius: 999px; padding: 4px 7px; background: var(--wash); color: var(--green); }
+      .tour-card { display: grid; grid-template-columns: 42px 1fr; gap: 10px; }
+      .step { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff; background: var(--green); font-weight: 800; }
+      .flow { display: grid; gap: 8px; }
+      .flow div { padding: 12px 14px; border-radius: 12px; background: #fff; border: 1px solid var(--line); font-weight: 800; }
+      .flow span { color: var(--muted); font-weight: 500; display: block; font-size: 12px; margin-top: 2px; }
+      footer { margin-top: 28px; color: var(--muted); font-size: 12px; text-align: center; }
+      @media (max-width: 430px) {
+        .shell { padding-left: 10px; padding-right: 10px; }
+        .grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+        .stat-card { min-height: 96px; padding: 12px; }
+        .stat-card strong { font-size: 24px; }
+        nav { top: 132px; }
+        .bar-row { grid-template-columns: 82px 1fr 30px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">手机可读版知识图谱 Dashboard</p>
+        <h1>proposal-writer-demo</h1>
+        <p>本地优先的企业内部议案/请示写作工作台 Demo，支持模板库、AI 起草、内容编辑、上传识别、格式检查和导出。</p>
+        <div class="pill-row">
+          <span class="pill">React</span><span class="pill">Vite</span><span class="pill">TypeScript</span><span class="pill">Tailwind CSS</span><span class="pill">Zustand</span><span class="pill">Tiptap</span>
+        </div>
+      </header>
+
+      <nav>
+        <a href="#stats">总览</a>
+        <a href="#layers">架构层</a>
+        <a href="#flow">主流程</a>
+        <a href="#files">关键文件</a>
+        <a href="#tour">导览</a>
+      </nav>
+
+      <section id="stats">
+        <h2>总览</h2>
+        <div class="grid">
+          <article class="stat-card"><span>分析文件</span><strong>38</strong><small>进入知识图谱的文件</small></article>
+          <article class="stat-card"><span>图谱节点</span><strong>128</strong><small>文件、配置、文档、函数</small></article>
+          <article class="stat-card"><span>关系连线</span><strong>211</strong><small>导入、调用、转换等</small></article>
+          <article class="stat-card"><span>架构层</span><strong>7</strong><small>按职责分组</small></article>
+        </div>
+      </section>
+
+      <section>
+        <h2>节点与关系分布</h2>
+        <div class="panel"><div class="bar-row"><span>function</span><div class="bar-track"><i style="width:100%"></i></div><b>90</b></div><div class="bar-row"><span>file</span><div class="bar-track"><i style="width:36%"></i></div><b>32</b></div><div class="bar-row"><span>config</span><div class="bar-track"><i style="width:6%"></i></div><b>4</b></div><div class="bar-row"><span>document</span><div class="bar-track"><i style="width:6%"></i></div><b>2</b></div></div>
+        <div class="panel" style="margin-top:10px"><div class="bar-row"><span>contains</span><div class="bar-track"><i style="width:100%"></i></div><b>90</b></div><div class="bar-row"><span>imports</span><div class="bar-track"><i style="width:70%"></i></div><b>63</b></div><div class="bar-row"><span>exports</span><div class="bar-track"><i style="width:42%"></i></div><b>38</b></div><div class="bar-row"><span>calls</span><div class="bar-track"><i style="width:10%"></i></div><b>9</b></div><div class="bar-row"><span>configures</span><div class="bar-track"><i style="width:6%"></i></div><b>5</b></div><div class="bar-row"><span>transforms</span><div class="bar-track"><i style="width:6%"></i></div><b>2</b></div><div class="bar-row"><span>documents</span><div class="bar-track"><i style="width:6%"></i></div><b>2</b></div><div class="bar-row"><span>writes_to</span><div class="bar-track"><i style="width:6%"></i></div><b>1</b></div><div class="bar-row"><span>defines_schema</span><div class="bar-track"><i style="width:6%"></i></div><b>1</b></div></div>
+      </section>
+
+      <section id="layers">
+        <h2>架构层</h2>
+        <article class="layer-card">
+        <div class="layer-head"><strong>文档与试用说明</strong><span>2 个文件</span></div>
+        <p>说明项目定位、使用方法、数据隐私和网页试用包。</p>
+        <div class="bar-track layer-track"><i style="width:22%"></i></div>
+      </article><article class="layer-card">
+        <div class="layer-head"><strong>构建与工程配置</strong><span>6 个文件</span></div>
+        <p>定义依赖、构建、类型检查、样式处理和入口 HTML。</p>
+        <div class="bar-track layer-track"><i style="width:67%"></i></div>
+      </article><article class="layer-card">
+        <div class="layer-head"><strong>应用外壳与国际化</strong><span>7 个文件</span></div>
+        <p>负责应用启动、顶层布局、全局样式、右侧工具栏和中英文文案。</p>
+        <div class="bar-track layer-track"><i style="width:78%"></i></div>
+      </article><article class="layer-card">
+        <div class="layer-head"><strong>A4 议案渲染与模板</strong><span>4 个文件</span></div>
+        <p>负责内置模板、格式标准、A4 预览和正文板块显示。</p>
+        <div class="bar-track layer-track"><i style="width:44%"></i></div>
+      </article><article class="layer-card">
+        <div class="layer-head"><strong>侧边栏编辑与基础控件</strong><span>7 个文件</span></div>
+        <p>负责模板库、工坊、AI 起草、内容编辑、导出面板和基础 UI 组件。</p>
+        <div class="bar-track layer-track"><i style="width:78%"></i></div>
+      </article><article class="layer-card">
+        <div class="layer-head"><strong>状态管理与业务模型</strong><span>3 个文件</span></div>
+        <p>定义议案、模板、AI 配置等业务数据结构，并集中管理本地状态。</p>
+        <div class="bar-track layer-track"><i style="width:33%"></i></div>
+      </article><article class="layer-card">
+        <div class="layer-head"><strong>本地服务、AI 与工具函数</strong><span>9 个文件</span></div>
+        <p>负责 BYOK AI 调用、本地存储、格式检查、模板识别、内容转换、标题拆分和单文件导出。</p>
+        <div class="bar-track layer-track"><i style="width:100%"></i></div>
+      </article>
+      </section>
+
+      <section id="flow">
+        <h2>主流程</h2>
+        <div class="flow">
+          <div>main.tsx <span>启动 React 应用并加载全局配置</span></div>
+          <div>App.tsx <span>组合 A4 预览、右侧工具栏、侧边栏</span></div>
+          <div>Zustand Store <span>集中保存模板、正文、AI 配置和工坊状态</span></div>
+          <div>Services <span>处理 AI、本地保存、模板识别、导出</span></div>
+          <div>Proposal Preview <span>把当前文档渲染为 A4 公文页面</span></div>
+        </div>
+      </section>
+
+      <section id="files">
+        <h2>关键文件</h2>
+        <article class="file-card">
+      <code>src/main.tsx</code>
+      <h3>main.tsx</h3>
+      <p>前端入口，初始化 i18n、加载样式，并把 App 挂载到页面。</p>
+      <div class="tags"><span>code</span></div>
+    </article><article class="file-card">
+      <code>src/App.tsx</code>
+      <h3>App.tsx</h3>
+      <p>应用主框架，组合顶部状态、A4 预览、右侧工具栏和侧边栏。</p>
+      <div class="tags"><span>code</span></div>
+    </article><article class="file-card">
+      <code>src/store/proposal.ts</code>
+      <h3>proposal.ts</h3>
+      <p>Zustand 全局状态中心，管理文档、模板、AI 配置、模板识别和导出消息。</p>
+      <div class="tags"><span>state</span><span>zustand</span></div>
+    </article><article class="file-card">
+      <code>src/components/Editor/index.tsx</code>
+      <h3>index.tsx</h3>
+      <p>侧边栏功能集合，包含模板库、模板工坊、AI 起草、内容编辑、检查、导出和外观控制。</p>
+      <div class="tags"><span>ui</span><span>drawer</span><span>editor</span></div>
+    </article><article class="file-card">
+      <code>src/components/Proposal/index.tsx</code>
+      <h3>index.tsx</h3>
+      <p>A4 公文预览组件，将当前议案渲染成标题、主送、正文、附件和落款。</p>
+      <div class="tags"><span>ui</span><span>proposal-preview</span><span>template</span></div>
+    </article><article class="file-card">
+      <code>src/services/ai.ts</code>
+      <h3>ai.ts</h3>
+      <p>AI 服务层，封装 OpenAI-compatible URL、AI 起草、模拟草稿和局部改写。</p>
+      <div class="tags"><span>service</span><span>local-first</span></div>
+    </article><article class="file-card">
+      <code>src/services/templateRecognition.ts</code>
+      <h3>templateRecognition.ts</h3>
+      <p>模板识别服务，从 DOCX/Markdown/PDF 提取文本并生成模板草稿，可选 BYOK 增强。</p>
+      <div class="tags"><span>service</span><span>local-first</span></div>
+    </article><article class="file-card">
+      <code>src/utils/documentSplit.ts</code>
+      <h3>documentSplit.ts</h3>
+      <p>文档拆分工具，按中文公文一级标题或 Markdown 标题拆分正文板块。</p>
+      <div class="tags"><span>utility</span></div>
+    </article><article class="file-card">
+      <code>scripts/make-standalone-web.mjs</code>
+      <h3>make-standalone-web.mjs</h3>
+      <p>单文件网页导出脚本，把构建产物中的 CSS/JS 内联到 index.html。</p>
+      <div class="tags"><span>code</span></div>
+    </article><article class="file-card">
+      <code>README.md</code>
+      <h3>README.md</h3>
+      <p>项目总说明文档，介绍本地优先、模板库、AI 起草、内容编辑、导出和后续路线。</p>
+      <div class="tags"><span>documentation</span></div>
+    </article>
+      </section>
+
+      <section id="tour">
+        <h2>阅读导览</h2>
+        <article class="tour-card">
+      <span class="step">01</span>
+      <div>
+        <h3>先理解产品目标</h3>
+        <p>从 README 了解这是一个本地优先的议案/请示生成工作台，以及它为什么强调本地保存、模板和 BYOK。</p>
+      </div>
+    </article><article class="tour-card">
+      <span class="step">02</span>
+      <div>
+        <h3>看应用如何启动</h3>
+        <p>main.tsx 挂载 React 应用，App.tsx 组合顶部状态、A4 预览、工具栏和侧边栏。</p>
+      </div>
+    </article><article class="tour-card">
+      <span class="step">03</span>
+      <div>
+        <h3>掌握状态和数据模型</h3>
+        <p>先看类型定义，再看 Zustand store 如何把模板、正文、AI 配置和本地保存连接起来。</p>
+      </div>
+    </article><article class="tour-card">
+      <span class="step">04</span>
+      <div>
+        <h3>理解模板到 A4 预览</h3>
+        <p>模板文件定义内置模板和格式标准，ProposalView 负责把当前文档渲染成公文页面。</p>
+      </div>
+    </article><article class="tour-card">
+      <span class="step">05</span>
+      <div>
+        <h3>理解侧边栏工作台</h3>
+        <p>Toolbar 打开不同抽屉，Editor/index.tsx 承载模板库、模板工坊、AI 起草、内容编辑、格式检查和导出面板。</p>
+      </div>
+    </article><article class="tour-card">
+      <span class="step">06</span>
+      <div>
+        <h3>理解 AI 和上传识别</h3>
+        <p>AI 服务处理 OpenAI-compatible 调用和局部改写，模板识别服务负责从 DOCX/MD/PDF 提取并识别结构。</p>
+      </div>
+    </article><article class="tour-card">
+      <span class="step">07</span>
+      <div>
+        <h3>理解导出和单文件分发</h3>
+        <p>proposal 服务导出 Markdown，独立脚本把 Vite 构建产物内联成可发给同事试用的 index.html。</p>
+      </div>
+    </article>
+      </section>
+
+      <footer>
+        生成时间：2026/5/29 23:04:46<br />
+        来源：.understand-anything/knowledge-graph.json
+      </footer>
+    </main>
+  </body>
+</html>
