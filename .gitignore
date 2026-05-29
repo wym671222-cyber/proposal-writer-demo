@@ -1,0 +1,8 @@
+node_modules/
+dist/
+proposal-demo-web/
+proposal-demo-web.zip
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+.DS_Store

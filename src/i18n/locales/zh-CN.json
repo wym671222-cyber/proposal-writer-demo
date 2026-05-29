@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "议案生成器",
+    "subtitle": "企业内部议案 / 请示写作工作台"
+  },
+  "toolbar": {
+    "templates": "模板",
+    "draft": "AI",
+    "editor": "编辑",
+    "appearance": "外观",
+    "checks": "检查",
+    "export": "导出",
+    "ai": "密钥",
+    "workshop": "工坊",
+    "language": "语言"
+  },
+  "drawer": {
+    "templates": "模板库",
+    "draft": "AI 起草",
+    "editor": "内容编辑",
+    "ai": "BYOK 配置",
+    "workshop": "模板工坊",
+    "checks": "格式检查",
+    "export": "导出",
+    "appearance": "外观控制"
+  }
+}

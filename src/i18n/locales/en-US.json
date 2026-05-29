@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "Proposal Writer",
+    "subtitle": "Internal proposal and request drafting workspace"
+  },
+  "toolbar": {
+    "templates": "Templates",
+    "draft": "AI",
+    "editor": "Edit",
+    "appearance": "Style",
+    "checks": "Checks",
+    "export": "Export",
+    "ai": "Keys",
+    "workshop": "Workshop",
+    "language": "Lang"
+  },
+  "drawer": {
+    "templates": "Template Library",
+    "draft": "AI Drafting",
+    "editor": "Content Editor",
+    "ai": "BYOK Settings",
+    "workshop": "Template Workshop",
+    "checks": "Format Checks",
+    "export": "Export",
+    "appearance": "Appearance"
+  }
+}
