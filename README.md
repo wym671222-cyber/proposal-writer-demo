@@ -11,6 +11,12 @@
 > **最大特点：本地化编辑和个性化使用。**  
 > 所有模板设置、议案内容、API 配置默认都保存在使用者自己的电脑浏览器里。每个人都可以按自己的工作习惯调整模板库、板块结构、行距、常用模型和正文内容，不影响其他人使用。
 
+## Open Source Value
+
+This project explores AI-assisted document automation for Chinese enterprise proposal and official document workflows. It is designed as a reusable Local First + BYOK reference implementation, especially for organizations that need strict formatting, privacy-preserving drafting, template customization, and human-in-the-loop AI editing.
+
+The project is currently in an early stage. Its value is not measured by downloads yet, but by its potential to serve an underserved open-source niche: compliance-oriented Chinese enterprise document generation.
+
 ## 1. 最大特点：本地化、个人化、可控
 
 | 重点 | 说明 | 对用户的价值 |

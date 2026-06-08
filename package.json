@@ -1,8 +1,12 @@
 {
   "name": "proposal-writer-demo",
-  "private": true,
+  "description": "Local First + BYOK proposal and official document generation demo for Chinese enterprise workflows.",
   "version": "0.1.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wym671222-cyber/proposal-writer-demo.git"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
